@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Laporin Aja</string>
+    <string name="title_profile">Profile</string>
+    <string name="title_timeline">Timeline</string>
+    <string name="title_new_report">New Report</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="action_login">Login</string>
+    <string name="action_register">Register</string>
+
+</resources>
