@@ -5,8 +5,8 @@ package com.github.wahyuadepratama.laporinaja.ApiHelper;
  */
 
 public class UtilsApi {
-    public static final String BASE_URL_API = "http://192.168.43.99:3000/api/";
-    public static final String BASE_URL_IMAGE = "http://192.168.43.99:3000/storage/report/";
+    public static final String BASE_URL_API = "http://laporinaja.wapydesign.com/api/";
+    public static final String BASE_URL_IMAGE = "http://laporinaja.wapydesign.com/storage/report/";
 
     // Mendeklarasikan Interface BaseApiService
     public static BaseApiService getAPIService(){

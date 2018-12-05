@@ -25,7 +25,7 @@ public class ReportListAdapter extends RecyclerView.Adapter<ReportListAdapter.Re
     OnReportItemClicked clickHandler;
 
     public void setListReport(ArrayList<ReportItem> reports){
-        //daftarFilm.clear();
+        listReport.clear();
         listReport = reports;
         notifyDataSetChanged();
     }
@@ -35,7 +35,7 @@ public class ReportListAdapter extends RecyclerView.Adapter<ReportListAdapter.Re
     }
 
     @Override
-    public ReportListAdapter.ReportHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+    public ReportHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater
                 .from(viewGroup.getContext())
                 .inflate(R.layout.report_row, viewGroup, false);
@@ -47,8 +47,12 @@ public class ReportListAdapter extends RecyclerView.Adapter<ReportListAdapter.Re
         ReportItem reportItem = listReport.get(position);
         holder.etType.setText(reportItem.getType_report());
         holder.etAddress.setText(reportItem.getAddress());
-        holder.etDescription.setText(reportItem.getDescription());
+        holder.etDescription.setText(reportItem.getDescription()+" ..");
         holder.etUpdatedAt.setText(reportItem.getUpdated_at());
+//        holder.etLat.setText(String.valueOf(reportItem.getLat()));
+//        holder.etLang.setText(String.valueOf(reportItem.getLang()));
+//        holder.owner.setText(reportItem.getOwner());
+//        holder.status.setText(reportItem.getStatus());
 
         String url = UtilsApi.BASE_URL_IMAGE + reportItem.getPhoto();
         Glide.with(holder.itemView).load(url).into(holder.imgPhoto);
@@ -75,6 +79,10 @@ public class ReportListAdapter extends RecyclerView.Adapter<ReportListAdapter.Re
         TextView etAddress;
         TextView etDescription;
         TextView etUpdatedAt;
+//        TextView etLat;
+//        TextView etLang;
+//        TextView owner;
+//        TextView status;
 
         public ReportHolder(@NonNull View itemView) {
             super(itemView);
@@ -83,6 +91,7 @@ public class ReportListAdapter extends RecyclerView.Adapter<ReportListAdapter.Re
             etAddress = itemView.findViewById(R.id.etAddress);
             etDescription = itemView.findViewById(R.id.etDescription);
             etUpdatedAt = itemView.findViewById(R.id.etUpdatedAt);
+//            etLat = itemView.findViewById(R.id.etLatDetail);
 
             itemView.setOnClickListener(new View.OnClickListener(){
 
