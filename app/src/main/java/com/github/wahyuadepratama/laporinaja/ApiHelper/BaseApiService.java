@@ -47,4 +47,10 @@ public interface BaseApiService {
             @Field("lat") Double lat,
             @Field("lang") Double lang);
 
+    @FormUrlEncoded
+    @POST("report/favorite/store")
+    Call<ResponseBody> addFavorite(@Field("id") Integer id);
+
+    @GET("report/favorite")
+    Call<ReportList> getFavoriteReport();
 }

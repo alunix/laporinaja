@@ -38,6 +38,9 @@ public class Report {
     @ColumnInfo(name = "status")
     public String status;
 
+    @ColumnInfo(name = "favorite")
+    public String favorite;
+
     @ColumnInfo(name = "owner")
     public String owner;
 

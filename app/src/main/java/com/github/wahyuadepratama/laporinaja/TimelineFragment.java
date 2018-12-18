@@ -55,6 +55,10 @@ public class TimelineFragment extends Fragment {
             case R.id.menu_refresh:
                 ((MainActivity) getActivity()).getListReport(rvReportList);
                 return true;
+            case R.id.menu_favorite:
+                ((MainActivity) getActivity()).setActionBarTitle("Favorite Report");
+                ((MainActivity) getActivity()).getListFavoriteReport(rvReportList);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

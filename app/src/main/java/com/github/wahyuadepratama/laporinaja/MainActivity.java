@@ -243,6 +243,7 @@ public class MainActivity extends AppCompatActivity implements ReportListAdapter
             report.photo = m.getPhoto();
             report.updated_at = m.getUpdated_at();
             report.status = m.getStatus();
+            report.favorite = m.getFavorite();
             report.owner = m.getOwner();
             report.type_report = m.getType_report();
 
@@ -319,6 +320,90 @@ public class MainActivity extends AppCompatActivity implements ReportListAdapter
                         report.lang,
                         report.updated_at,
                         report.status,
+                        report.favorite,
+                        report.owner,
+                        report.type_report
+                );
+                reportItemList.add(m);
+            }
+
+            reportListAdapter.setListReport((ArrayList<ReportItem>) reportItemList);
+            progressBarMain.setVisibility(View.INVISIBLE);
+            Toast.makeText(MainActivity.this, "Kamu tidak terkoneksi internet!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, "Kami mencoba menampilkan data terakhir ...", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public void getListFavoriteReport(RecyclerView rvReportList){
+
+        progressBarMain.setVisibility(View.VISIBLE);
+
+        reportListAdapter = new ReportListAdapter();
+        reportListAdapter.setListReport(listReport);
+        reportListAdapter.setClickHandler(this);
+
+        rvReportList.setAdapter(reportListAdapter);
+
+        int orientation = getResources().getConfiguration().orientation;
+        if(orientation == Configuration.ORIENTATION_PORTRAIT){
+            rvReportList.setLayoutManager(new LinearLayoutManager(this));
+        }else{
+            rvReportList.setLayoutManager(new GridLayoutManager(this, 2));
+        }
+
+        if(isConnected()) {
+            String API_BASE_URL = UtilsApi.BASE_URL_API;
+
+            OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+
+            Retrofit.Builder builder =
+                    new Retrofit.Builder()
+                            .baseUrl(API_BASE_URL)
+                            .addConverterFactory(
+                                    GsonConverterFactory.create()
+                            );
+
+            Retrofit retrofit = builder.client(httpClient.build()).build();
+
+            client = retrofit.create(BaseApiService.class);
+
+            Call<ReportList> call = client.getFavoriteReport();
+
+            // Execute the call asynchronously. Get a positive or negative callback.
+            call.enqueue(new Callback<ReportList>() {
+                @Override
+                public void onResponse(Call<ReportList> call, Response<ReportList> response) {
+                    Toast.makeText(MainActivity.this, "Load Timeline Success", Toast.LENGTH_SHORT).show();
+                    ReportList reportList = response.body();
+                    List<ReportItem> listReportItem = reportList.results;
+
+                    saveReportToDb(listReportItem);
+
+                    reportListAdapter.setListReport((ArrayList<ReportItem>) listReportItem);
+                    progressBarMain.setVisibility(View.INVISIBLE);
+                }
+
+                @Override
+                public void onFailure(Call<ReportList> call, Throwable t) {
+                    Toast.makeText(MainActivity.this, "Load Timeline Failed", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }else{
+
+            List<Report> reportList = mDb.reportDao().getAllReport();
+            List<ReportItem> reportItemList = new ArrayList<>();
+            for(Report report : reportList){
+                ReportItem m = new ReportItem(
+                        report.id,
+                        report.id_owner,
+                        report.address,
+                        report.photo,
+                        report.description,
+                        report.lat,
+                        report.lang,
+                        report.updated_at,
+                        report.status,
+                        report.favorite,
                         report.owner,
                         report.type_report
                 );

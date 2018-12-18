@@ -20,9 +20,10 @@ public class ReportItem implements Parcelable {
     String status;
     String owner;
     String type_report;
+    String favorite;
 
     public ReportItem(int id, int id_owner, String address, String photo, String description, Double lat, Double lang,
-                        String updated_at, String status, String owner, String type_report) {
+                        String updated_at, String status, String favorite, String owner, String type_report) {
         this.id = id;
         this.id_owner = id_owner;
         this.address = address;
@@ -32,6 +33,7 @@ public class ReportItem implements Parcelable {
         this.lang = lang;
         this.updated_at = updated_at;
         this.status = status;
+        this.favorite = favorite;
         this.owner = owner;
         this.type_report = type_report;
     }
@@ -108,6 +110,14 @@ public class ReportItem implements Parcelable {
         this.status = status;
     }
 
+    public String getFavorite() {
+        return favorite;
+    }
+
+    public void setFavorite(String favorite) {
+        this.favorite = favorite;
+    }
+
     public String getOwner() {
         return owner;
     }
@@ -138,6 +148,7 @@ public class ReportItem implements Parcelable {
         parcel.writeDouble(this.lang);
         parcel.writeString(this.updated_at);
         parcel.writeString(this.status);
+        parcel.writeString(this.favorite);
         parcel.writeString(this.owner);
         parcel.writeString(this.type_report);
     }
@@ -152,6 +163,7 @@ public class ReportItem implements Parcelable {
         lang = in.readDouble();
         updated_at = in.readString();
         status = in.readString();
+        favorite = in.readString();
         owner = in.readString();
         type_report = in.readString();
     }
