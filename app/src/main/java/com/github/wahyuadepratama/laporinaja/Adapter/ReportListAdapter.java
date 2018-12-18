@@ -79,10 +79,6 @@ public class ReportListAdapter extends RecyclerView.Adapter<ReportListAdapter.Re
         TextView etAddress;
         TextView etDescription;
         TextView etUpdatedAt;
-//        TextView etLat;
-//        TextView etLang;
-//        TextView owner;
-//        TextView status;
 
         public ReportHolder(@NonNull View itemView) {
             super(itemView);
@@ -91,7 +87,6 @@ public class ReportListAdapter extends RecyclerView.Adapter<ReportListAdapter.Re
             etAddress = itemView.findViewById(R.id.etAddress);
             etDescription = itemView.findViewById(R.id.etDescription);
             etUpdatedAt = itemView.findViewById(R.id.etUpdatedAt);
-//            etLat = itemView.findViewById(R.id.etLatDetail);
 
             itemView.setOnClickListener(new View.OnClickListener(){
 

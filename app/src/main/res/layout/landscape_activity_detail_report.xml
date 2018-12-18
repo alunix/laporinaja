@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+    </android.support.design.widget.AppBarLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            app:cardBackgroundColor="@color/colorRow"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="MissingConstraints">
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp">
+
+                <ImageView
+                    android:id="@+id/photoDetailLandscape"
+                    android:layout_width="266dp"
+                    android:layout_height="217dp"
+                    android:layout_marginStart="8dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:srcCompat="@mipmap/ic_launcher_round"
+                    tools:layout_editor_absoluteY="5dp"
+                    android:layout_marginLeft="8dp" />
+
+                <TextView
+                    android:id="@+id/jenisLaporan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/centurygothic"
+                    android:text="Jenis Laporan"
+                    app:layout_constraintStart_toEndOf="@+id/photoDetailLandscape"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginLeft="16dp" />
+
+                <TextView
+                    android:id="@+id/etTypeDetailLandscape"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/centurygothic"
+                    android:text="Fasilitas"
+                    app:layout_constraintStart_toEndOf="@+id/jenisLaporan"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/lokasi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/centurygothic"
+                    android:text="Lokasi"
+                    app:layout_constraintStart_toEndOf="@+id/photoDetailLandscape"
+                    app:layout_constraintTop_toBottomOf="@+id/jenisLaporan"
+                    android:layout_marginLeft="16dp" />
+
+                <TextView
+                    android:id="@+id/etLocationDetailLandscape"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginLeft="24dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/centurygothic"
+                    android:text="Mata Air"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/jenisLaporan"
+                    app:layout_constraintTop_toBottomOf="@+id/etTypeDetailLandscape" />
+
+                <TextView
+                    android:id="@+id/latitude"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="32dp"
+                    android:fontFamily="@font/centurygothic"
+                    android:text="Latitude"
+                    app:layout_constraintStart_toEndOf="@+id/photoDetailLandscape"
+                    app:layout_constraintTop_toBottomOf="@+id/etLocationDetailLandscape"
+                    android:layout_marginLeft="16dp" />
+
+                <TextView
+                    android:id="@+id/etLatDetailLandscape"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="24dp"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="32dp"
+                    android:fontFamily="@font/centurygothic"
+                    android:text="-100.1232"
+                    app:layout_constraintStart_toEndOf="@+id/jenisLaporan"
+                    app:layout_constraintTop_toBottomOf="@+id/etLocationDetailLandscape" />
+
+                <TextView
+                    android:id="@+id/longitude"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/centurygothic"
+                    android:text="Longitude"
+                    app:layout_constraintStart_toEndOf="@+id/photoDetailLandscape"
+                    app:layout_constraintTop_toBottomOf="@+id/latitude"
+                    android:layout_marginLeft="16dp" />
+
+                <TextView
+                    android:id="@+id/etLangDetailLandscape"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="24dp"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/centurygothic"
+                    android:text="90.12312"
+                    app:layout_constraintStart_toEndOf="@+id/jenisLaporan"
+                    app:layout_constraintTop_toBottomOf="@+id/etLatDetailLandscape" />
+
+                <TextView
+                    android:id="@+id/pelapor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/centurygothic"
+                    android:text="Pelapor"
+                    app:layout_constraintStart_toEndOf="@+id/photoDetailLandscape"
+                    app:layout_constraintTop_toBottomOf="@+id/longitude"
+                    android:layout_marginLeft="16dp" />
+
+                <TextView
+                    android:id="@+id/etOwnerDetailLandscape"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="24dp"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/centurygothic"
+                    android:text="Wahyu Ade Pratama"
+                    app:layout_constraintStart_toEndOf="@+id/jenisLaporan"
+                    app:layout_constraintTop_toBottomOf="@+id/etLangDetailLandscape" />
+
+                <TextView
+                    android:id="@+id/waktu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/centurygothic"
+                    android:text="Di upload :"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/photoDetailLandscape"
+                    android:layout_marginLeft="16dp" />
+
+                <TextView
+                    android:id="@+id/etUpdateAtDetailLandscape"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/centurygothic"
+                    android:text="4 Hari yang lalu"
+                    app:layout_constraintStart_toEndOf="@+id/waktu"
+                    app:layout_constraintTop_toBottomOf="@+id/photoDetailLandscape"
+                    android:layout_marginLeft="2dp" />
+
+                <TextView
+                    android:id="@+id/status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/centurygothic"
+                    android:text="Status"
+                    app:layout_constraintStart_toEndOf="@+id/photoDetailLandscape"
+                    app:layout_constraintTop_toBottomOf="@+id/pelapor"
+                    android:layout_marginLeft="16dp" />
+
+                <TextView
+                    android:id="@+id/etStatusDetailLandscape"
+                    android:layout_width="wrap_content"
+                    android:layout_height="21dp"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/centurygothic"
+                    android:text="waiting"
+                    app:layout_constraintStart_toEndOf="@+id/jenisLaporan"
+                    app:layout_constraintTop_toBottomOf="@+id/etOwnerDetailLandscape"
+                    android:layout_marginLeft="24dp" />
+
+                <TextView
+                    android:id="@+id/deskripsi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/centurygothic"
+                    android:text="Deskripsi"
+                    app:layout_constraintStart_toEndOf="@+id/photoDetailLandscape"
+                    app:layout_constraintTop_toBottomOf="@+id/status"
+                    android:layout_marginLeft="16dp" />
+
+                <TextView
+                    android:id="@+id/etDescriptionDetailLandscape"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="24dp"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/centurygothic"
+                    android:text=" blabl bla bla blabla bla"
+                    app:layout_constraintStart_toEndOf="@+id/jenisLaporan"
+                    app:layout_constraintTop_toBottomOf="@+id/etStatusDetailLandscape" />
+
+
+            </android.support.constraint.ConstraintLayout>
+
+        </android.support.v7.widget.CardView>
+
+        </LinearLayout>
+    </ScrollView>
+
+</android.support.constraint.ConstraintLayout>

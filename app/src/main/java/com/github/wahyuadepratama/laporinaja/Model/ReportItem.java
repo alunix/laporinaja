@@ -14,8 +14,8 @@ public class ReportItem implements Parcelable {
     String address;
     String photo;
     String description;
-    Double lat;
-    Double lang;
+    double lat;
+    double lang;
     String updated_at;
     String status;
     String owner;
@@ -76,7 +76,7 @@ public class ReportItem implements Parcelable {
         this.description = description;
     }
 
-    public Double getLat() {
+    public double getLat() {
         return lat;
     }
 
@@ -84,7 +84,7 @@ public class ReportItem implements Parcelable {
         this.lat = lat;
     }
 
-    public Double getLang() {
+    public double getLang() {
         return lang;
     }
 
@@ -148,16 +148,8 @@ public class ReportItem implements Parcelable {
         address = in.readString();
         photo = in.readString();
         description = in.readString();
-        if (in.readByte() == 0) {
-            lat = null;
-        } else {
-            lat = in.readDouble();
-        }
-        if (in.readByte() == 0) {
-            lang = null;
-        } else {
-            lang = in.readDouble();
-        }
+        lat = in.readDouble();
+        lang = in.readDouble();
         updated_at = in.readString();
         status = in.readString();
         owner = in.readString();

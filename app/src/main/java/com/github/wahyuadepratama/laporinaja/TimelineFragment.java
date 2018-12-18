@@ -8,6 +8,9 @@ import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
@@ -21,7 +24,7 @@ import java.util.ArrayList;
 public class TimelineFragment extends Fragment {
 
     RecyclerView rvReportList;
-    ProgressBar progressBar;
+    ProgressBar progressBarMain;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -34,7 +37,27 @@ public class TimelineFragment extends Fragment {
         ((MainActivity) getActivity()).setActionBarTitle("Timeline Report");
         ((MainActivity) getActivity()).getListReport(rvReportList);
 
+        setHasOptionsMenu(true);
+
         return view;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.menu_refresh:
+                ((MainActivity) getActivity()).getListReport(rvReportList);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
 }

@@ -2,6 +2,7 @@ package com.github.wahyuadepratama.laporinaja;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -34,7 +35,11 @@ public class NewReportFragment extends Fragment implements LocationListener{
     Spinner type;
     LocationManager locationManager;
     String stringType, stringAddress, stringDescription;
+
     Double doubleLat, doubleLang;
+    String doubleLatString, doubleLangString;
+
+    Bitmap image;
 
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
@@ -88,9 +93,38 @@ public class NewReportFragment extends Fragment implements LocationListener{
 
                 type = (Spinner) view.findViewById(R.id.sTypeReportNew);
                 stringType = type.getSelectedItem().toString();
+
+                if(stringType.equals("Fasilitas")){
+                    stringType = "1";
+                }else{
+                    stringType = "2";
+                }
+
                 ((MainActivity) getActivity()).uploadToServer(stringType, stringAddress, stringDescription, doubleLat, doubleLang);
             }
         });
+
+        if(savedInstanceState!=null)
+        {
+            String lat = savedInstanceState.getString("lat");
+            String lang = savedInstanceState.getString("lang");
+            Bitmap image = savedInstanceState.getParcelable("image");
+
+            doubleLatString = lat;
+            doubleLangString = lang;
+            this.image = image;
+
+            TextView lats = (TextView)view.findViewById(R.id.tvLatNew);
+            lats.setText("Latitude: " + lat);
+
+            TextView langs = (TextView)view.findViewById(R.id.tvLangNew);
+            langs.setText("Longitude: " +lang);
+
+            ImageView images = (ImageView)view.findViewById(R.id.imgView);
+            images.setImageBitmap(this.image);
+
+            this.image = ((MainActivity) getActivity()).imageBitmap;
+        }
 
         return view;
     }
@@ -99,7 +133,7 @@ public class NewReportFragment extends Fragment implements LocationListener{
         try {
             locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
             locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5000, 5, this);
-            Toast.makeText(this.getContext(), "Kami sudah mendapatkan lokasi kamu!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this.getContext(), "Kami sedang mendapatkan lokasi kamu..", Toast.LENGTH_LONG).show();
         }
         catch(SecurityException e) {
             e.printStackTrace();
@@ -110,6 +144,10 @@ public class NewReportFragment extends Fragment implements LocationListener{
     public void onLocationChanged(Location location) {
         doubleLat = location.getLatitude();
         doubleLang = location.getLongitude();
+
+        doubleLatString = String.valueOf(doubleLat);
+        doubleLangString = String.valueOf(doubleLang);
+
         lat.setText("Latitude: " + location.getLatitude());
         lang.setText("Longitude: " + location.getLongitude());
 
@@ -136,5 +174,14 @@ public class NewReportFragment extends Fragment implements LocationListener{
     @Override
     public void onProviderDisabled(String provider) {
         Toast.makeText(this.getContext(), "Please Enable GPS and Internet", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        image = ((MainActivity) getActivity()).imageBitmap;
+        outState.putString("lat", doubleLatString);
+        outState.putString("lang", doubleLangString);
+        outState.putParcelable("image", image);
     }
 }

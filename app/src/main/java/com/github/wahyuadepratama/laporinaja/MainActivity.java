@@ -2,6 +2,7 @@ package com.github.wahyuadepratama.laporinaja;
 
 
 import android.app.ProgressDialog;
+import android.arch.persistence.room.Room;
 import android.content.Context;
 
 import android.content.Intent;
@@ -10,6 +11,8 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
@@ -25,7 +28,6 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -33,6 +35,8 @@ import android.widget.Toast;
 
 import com.github.wahyuadepratama.laporinaja.Adapter.ReportListAdapter;
 import com.github.wahyuadepratama.laporinaja.ApiHelper.BaseApiService;
+import com.github.wahyuadepratama.laporinaja.Database.AppDatabase;
+import com.github.wahyuadepratama.laporinaja.Database.Report;
 import com.github.wahyuadepratama.laporinaja.Model.ReportItem;
 
 import java.io.ByteArrayOutputStream;
@@ -52,6 +56,7 @@ import com.github.wahyuadepratama.laporinaja.Model.ReportList;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import static com.github.wahyuadepratama.laporinaja.LoginActivity.ID;
 import static com.github.wahyuadepratama.laporinaja.LoginActivity.NAME;
@@ -71,6 +76,9 @@ public class MainActivity extends AppCompatActivity implements ReportListAdapter
     public SharedPreferences sharedpreferences;
     public String id, name, email, phone, status, updated_at;
 
+    Bitmap imageBitmap;
+    ImageView imgView;
+
     ReportListAdapter reportListAdapter;
     ArrayList<ReportItem> listReport = new ArrayList<>();
 
@@ -83,6 +91,8 @@ public class MainActivity extends AppCompatActivity implements ReportListAdapter
     Context mContext;
     BaseApiService mApiService;
     ProgressDialog loading;
+
+    AppDatabase mDb;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -114,9 +124,10 @@ public class MainActivity extends AppCompatActivity implements ReportListAdapter
     };
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void onCreate(Bundle outState) {
+        super.onCreate(outState);
         setContentView(R.layout.activity_main);
+
         progressBarMain = findViewById(R.id.progressBarMain);
 
         if (getSupportActionBar().getTitle().toString().equals("Profile")){
@@ -155,6 +166,10 @@ public class MainActivity extends AppCompatActivity implements ReportListAdapter
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        mDb = Room.databaseBuilder(this, AppDatabase.class, "report.db")
+                .allowMainThreadQueries()
+                .build();
 
         getSession();
     }
@@ -209,7 +224,35 @@ public class MainActivity extends AppCompatActivity implements ReportListAdapter
         startActivity(intent);
     }
 
+    public Boolean isConnected(){
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = (activeNetwork != null) && activeNetwork.isConnectedOrConnecting();
+        return isConnected;
+    }
+
+    public void saveReportToDb(List<ReportItem> reportList){
+
+        for(ReportItem m : reportList){
+            Report report = new Report();
+            report.id = m.getId();
+            report.address = m.getAddress();
+            report.description = m.getDescription();
+            report.lat = m.getLat();
+            report.lang = m.getLang();
+            report.photo = m.getPhoto();
+            report.updated_at = m.getUpdated_at();
+            report.status = m.getStatus();
+            report.owner = m.getOwner();
+            report.type_report = m.getType_report();
+
+            mDb.reportDao().insertReport(report);
+        }
+    }
+
     public void getListReport(RecyclerView rvReportList){
+
+        progressBarMain.setVisibility(View.VISIBLE);
 
         reportListAdapter = new ReportListAdapter();
         reportListAdapter.setListReport(listReport);
@@ -224,38 +267,69 @@ public class MainActivity extends AppCompatActivity implements ReportListAdapter
             rvReportList.setLayoutManager(new GridLayoutManager(this, 2));
         }
 
-        String API_BASE_URL = UtilsApi.BASE_URL_API;
+        if(isConnected()) {
+            String API_BASE_URL = UtilsApi.BASE_URL_API;
 
-        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+            OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
 
-        Retrofit.Builder builder =
-                new Retrofit.Builder()
-                        .baseUrl(API_BASE_URL)
-                        .addConverterFactory(
-                                GsonConverterFactory.create()
-                        );
+            Retrofit.Builder builder =
+                    new Retrofit.Builder()
+                            .baseUrl(API_BASE_URL)
+                            .addConverterFactory(
+                                    GsonConverterFactory.create()
+                            );
 
-        Retrofit retrofit = builder.client(httpClient.build()).build();
+            Retrofit retrofit = builder.client(httpClient.build()).build();
 
-        client =  retrofit.create(BaseApiService.class);
+            client = retrofit.create(BaseApiService.class);
 
-        Call<ReportList> call = client.getReport();
+            Call<ReportList> call = client.getReport();
 
-        // Execute the call asynchronously. Get a positive or negative callback.
-        call.enqueue(new Callback<ReportList>() {
-            @Override
-            public void onResponse(Call<ReportList> call, Response<ReportList> response) {
-                Toast.makeText(MainActivity.this, "Load Timeline", Toast.LENGTH_SHORT).show();
-                ReportList reportList = response.body();
-                List<ReportItem> listReportItem = reportList.results;
-                reportListAdapter.setListReport((ArrayList<ReportItem>) listReportItem);
+            // Execute the call asynchronously. Get a positive or negative callback.
+            call.enqueue(new Callback<ReportList>() {
+                @Override
+                public void onResponse(Call<ReportList> call, Response<ReportList> response) {
+                    Toast.makeText(MainActivity.this, "Load Timeline Success", Toast.LENGTH_SHORT).show();
+                    ReportList reportList = response.body();
+                    List<ReportItem> listReportItem = reportList.results;
+
+                    saveReportToDb(listReportItem);
+
+                    reportListAdapter.setListReport((ArrayList<ReportItem>) listReportItem);
+                    progressBarMain.setVisibility(View.INVISIBLE);
+                }
+
+                @Override
+                public void onFailure(Call<ReportList> call, Throwable t) {
+                    Toast.makeText(MainActivity.this, "Load Timeline Failed", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }else{
+
+            List<Report> reportList = mDb.reportDao().getAllReport();
+            List<ReportItem> reportItemList = new ArrayList<>();
+            for(Report report : reportList){
+                ReportItem m = new ReportItem(
+                        report.id,
+                        report.id_owner,
+                        report.address,
+                        report.photo,
+                        report.description,
+                        report.lat,
+                        report.lang,
+                        report.updated_at,
+                        report.status,
+                        report.owner,
+                        report.type_report
+                );
+                reportItemList.add(m);
             }
 
-            @Override
-            public void onFailure(Call<ReportList> call, Throwable t) {
-                Toast.makeText(MainActivity.this, "Load Timeline Failed", Toast.LENGTH_SHORT).show();
-            }
-        });
+            reportListAdapter.setListReport((ArrayList<ReportItem>) reportItemList);
+            progressBarMain.setVisibility(View.INVISIBLE);
+            Toast.makeText(MainActivity.this, "Kamu tidak terkoneksi internet!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, "Kami mencoba menampilkan data terakhir ...", Toast.LENGTH_LONG).show();
+        }
     }
 
     public void reportItemClicked(ReportItem m) {
@@ -275,8 +349,8 @@ public class MainActivity extends AppCompatActivity implements ReportListAdapter
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            ImageView imgView = (ImageView) findViewById(R.id.imgView);
+            imageBitmap = (Bitmap) extras.get("data");
+            imgView = (ImageView) findViewById(R.id.imgView);
             imgView.setImageBitmap(imageBitmap);
             setPhoto(imageBitmap);
         }
@@ -299,10 +373,10 @@ public class MainActivity extends AppCompatActivity implements ReportListAdapter
 
         mContext = this;
         mApiService = UtilsApi.getAPIService();
-        loading = ProgressDialog.show(mContext, null, "Please Waiting...", true, false);
+        loading = ProgressDialog.show(mContext, null, "Laporan sedangn diproses...", true, false);
 
         mApiService.reportStore(
-                "1", id, address, imagebase64string, description, lat, lang
+                id_type, id, address, imagebase64string, description, lat, lang
         ).enqueue(new Callback<ResponseBody>() {
 
             @Override
@@ -344,4 +418,5 @@ public class MainActivity extends AppCompatActivity implements ReportListAdapter
             }
         });
     }
+
 }
