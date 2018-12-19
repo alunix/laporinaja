@@ -248,6 +248,17 @@
                     app:layout_constraintStart_toEndOf="@+id/jenisLaporan"
                     app:layout_constraintTop_toBottomOf="@+id/etStatusDetailLandscape" />
 
+                <ImageView
+                    android:id="@+id/favoriteImage"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="4dp"
+                    android:onClick="addFavoriteToServer"
+                    app:layout_constraintStart_toEndOf="@+id/etUpdateAtDetailLandscape"
+                    app:layout_constraintTop_toBottomOf="@+id/photoDetailLandscape"
+                    app:srcCompat="@drawable/unfavorite" />
+
 
             </android.support.constraint.ConstraintLayout>
 
