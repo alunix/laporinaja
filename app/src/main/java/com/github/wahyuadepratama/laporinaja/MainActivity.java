@@ -36,6 +36,7 @@ import android.widget.Toast;
 import com.github.wahyuadepratama.laporinaja.Adapter.ReportListAdapter;
 import com.github.wahyuadepratama.laporinaja.ApiHelper.BaseApiService;
 import com.github.wahyuadepratama.laporinaja.Database.AppDatabase;
+import com.github.wahyuadepratama.laporinaja.Database.Favorite;
 import com.github.wahyuadepratama.laporinaja.Database.Report;
 import com.github.wahyuadepratama.laporinaja.Model.ReportItem;
 
@@ -251,9 +252,30 @@ public class MainActivity extends AppCompatActivity implements ReportListAdapter
         }
     }
 
+    public void saveFavoriteToDb(List<ReportItem> reportList){
+
+        for(ReportItem m : reportList){
+            Favorite report = new Favorite();
+            report.id = m.getId();
+            report.address = m.getAddress();
+            report.description = m.getDescription();
+            report.lat = m.getLat();
+            report.lang = m.getLang();
+            report.photo = m.getPhoto();
+            report.updated_at = m.getUpdated_at();
+            report.status = m.getStatus();
+            report.favorite = m.getFavorite();
+            report.owner = m.getOwner();
+            report.type_report = m.getType_report();
+
+            mDb.favoriteDao().insertFavorite(report);
+        }
+    }
+
     public void getListReport(RecyclerView rvReportList){
 
         progressBarMain.setVisibility(View.VISIBLE);
+        setActionBarTitle("Timeline Report");
 
         reportListAdapter = new ReportListAdapter();
         reportListAdapter.setListReport(listReport);
@@ -377,7 +399,7 @@ public class MainActivity extends AppCompatActivity implements ReportListAdapter
                     ReportList reportList = response.body();
                     List<ReportItem> listReportItem = reportList.results;
 
-                    saveReportToDb(listReportItem);
+                    saveFavoriteToDb(listReportItem);
 
                     reportListAdapter.setListReport((ArrayList<ReportItem>) listReportItem);
                     progressBarMain.setVisibility(View.INVISIBLE);
@@ -390,7 +412,7 @@ public class MainActivity extends AppCompatActivity implements ReportListAdapter
             });
         }else{
 
-            List<Report> reportList = mDb.reportDao().getAllReport();
+            List<Report> reportList = mDb.favoriteDao().getAllFavoriteReport();
             List<ReportItem> reportItemList = new ArrayList<>();
             for(Report report : reportList){
                 ReportItem m = new ReportItem(

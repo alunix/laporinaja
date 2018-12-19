@@ -49,13 +49,15 @@ public class ReportListAdapter extends RecyclerView.Adapter<ReportListAdapter.Re
         holder.etAddress.setText(reportItem.getAddress());
         holder.etDescription.setText(reportItem.getDescription()+" ..");
         holder.etUpdatedAt.setText(reportItem.getUpdated_at());
-//        holder.etLat.setText(String.valueOf(reportItem.getLat()));
-//        holder.etLang.setText(String.valueOf(reportItem.getLang()));
-//        holder.owner.setText(reportItem.getOwner());
-//        holder.status.setText(reportItem.getStatus());
 
         String url = UtilsApi.BASE_URL_IMAGE + reportItem.getPhoto();
         Glide.with(holder.itemView).load(url).into(holder.imgPhoto);
+
+        if(reportItem.getFavorite().equals("true")){
+            holder.rvFavorite.setImageResource(R.drawable.favorite);
+        }else{
+            holder.rvFavorite.setImageResource(R.drawable.unfavorite);
+        }
     }
 
     @Override
@@ -79,6 +81,7 @@ public class ReportListAdapter extends RecyclerView.Adapter<ReportListAdapter.Re
         TextView etAddress;
         TextView etDescription;
         TextView etUpdatedAt;
+        ImageView rvFavorite;
 
         public ReportHolder(@NonNull View itemView) {
             super(itemView);
@@ -87,6 +90,7 @@ public class ReportListAdapter extends RecyclerView.Adapter<ReportListAdapter.Re
             etAddress = itemView.findViewById(R.id.etAddress);
             etDescription = itemView.findViewById(R.id.etDescription);
             etUpdatedAt = itemView.findViewById(R.id.etUpdatedAt);
+            rvFavorite = itemView.findViewById((R.id.rv_favorite));
 
             itemView.setOnClickListener(new View.OnClickListener(){
 
