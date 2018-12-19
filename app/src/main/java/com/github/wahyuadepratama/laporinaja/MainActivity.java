@@ -159,7 +159,7 @@ public class MainActivity extends AppCompatActivity implements ReportListAdapter
                 if (getSupportActionBar().getTitle().toString().equals("Laporin Aja")) {
                     getSupportFragmentManager()
                             .beginTransaction()
-                            .add(R.id.fragment_placeholder, profileFragment)
+                            .replace(R.id.fragment_placeholder, timelineFragment)
                             .commit();
                 }
             }

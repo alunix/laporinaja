@@ -149,6 +149,12 @@ public class DetailReportActivity extends AppCompatActivity {
         changeIconFavorite();
     }
 
+    public void onBackPressed() {
+        Intent intent = new Intent(DetailReportActivity.this, MainActivity.class);
+        startActivity(intent);
+        super.onBackPressed();
+    }
+
     public boolean onCreateOptionsMenu(Menu menu) {
         return true;
     }
